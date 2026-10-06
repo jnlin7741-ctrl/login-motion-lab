@@ -1,0 +1,472 @@
+/* Edit this file. The base layout and Vue behavior are already provided. */
+
+/* ============================================================
+   全局配色覆盖：紫蓝霓虹赛博朋克风
+   ============================================================ */
+:root {
+  --accent: #8b5cf6;
+  --ink: #e2e8f0;
+  --muted: #94a3b8;
+  --line: rgba(139, 92, 246, 0.3);
+}
+
+html, body {
+  background: #0a0a1a !important;
+  color: #e2e8f0;
+}
+
+/* 覆盖 starter 的浅色背景 */
+.intro {
+  background: linear-gradient(135deg, #0f0c29, #1a1145, #0f0c29) !important;
+}
+.workspace {
+  background: rgba(10, 10, 26, 0.6) !important;
+}
+
+/* ============================================================
+   酷炫背景层
+   ============================================================ */
+
+/* 深色流动渐变背景 */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -4;
+  background: linear-gradient(
+    -45deg,
+    #0a0a1a,
+    #1a0b2e,
+    #0d1b2a,
+    #1a0b3a,
+    #0a0a1a
+  );
+  background-size: 400% 400%;
+  animation: auroraShift 12s ease infinite;
+  pointer-events: none;
+}
+
+@keyframes auroraShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* 霓虹网格脉动 */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  background-image:
+    linear-gradient(rgba(139, 92, 246, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(6, 182, 212, 0.12) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: gridPulse 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes gridPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+/* 多个霓虹光晕球 */
+.shell::before,
+.shell::after,
+.intro::before,
+.workspace::before {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.5;
+  z-index: -2;
+  pointer-events: none;
+}
+
+.shell::before {
+  width: 450px; height: 450px;
+  background: radial-gradient(circle, #8b5cf6, transparent 70%);
+  top: -150px; right: 5%;
+  animation: floatOrb1 12s ease-in-out infinite;
+}
+
+.shell::after {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, #06b6d4, transparent 70%);
+  bottom: -120px; left: 3%;
+  animation: floatOrb2 14s ease-in-out infinite;
+}
+
+.intro::before {
+  width: 320px; height: 320px;
+  background: radial-gradient(circle, #ec4899, transparent 70%);
+  top: 40%; left: -100px;
+  animation: floatOrb3 16s ease-in-out infinite;
+}
+
+.workspace::before {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, #6366f1, transparent 70%);
+  bottom: 15%; right: -80px;
+  animation: floatOrb4 10s ease-in-out infinite;
+}
+
+@keyframes floatOrb1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-80px, 70px) scale(1.2); }
+}
+@keyframes floatOrb2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(70px, -60px) scale(1.15); }
+}
+@keyframes floatOrb3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(50px, -40px) scale(1.25); }
+  66% { transform: translate(-40px, 30px) scale(0.85); }
+}
+@keyframes floatOrb4 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-60px, -50px) scale(1.2); }
+}
+
+/* ============================================================
+   卡片效果：毛玻璃 + 霓虹发光边框
+   ============================================================ */
+.card-shell {
+  animation: cardIn 650ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.card {
+  position: relative;
+  border-radius: 14px;
+  background: rgba(20, 20, 45, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  transition: box-shadow 300ms ease, transform 300ms ease;
+}
+
+/* 卡片霓虹发光边框 */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: -1.5px;
+  border-radius: 15px;
+  padding: 1.5px;
+  background: linear-gradient(135deg, #8b5cf6, #06b6d4, #ec4899, #8b5cf6);
+  background-size: 300% 300%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: borderGlow 3s ease infinite;
+  pointer-events: none;
+}
+
+@keyframes borderGlow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes cardIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95) rotateX(5deg);
+    filter: blur(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotateX(0);
+    filter: blur(0);
+  }
+}
+
+/* 标题霓虹渐变 */
+.card h2 {
+  background: linear-gradient(135deg, #ffffff 0%, #c4b5fd 40%, #8b5cf6 70%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.4));
+}
+
+.card .description { color: #94a3b8; }
+.field label { color: #cbd5e1; }
+.demo-label, .eyebrow { color: #8b5cf6; }
+
+/* ============================================================
+   01 TODO: input transition and focus ring.
+   ============================================================ */
+.field input {
+  background: rgba(30, 30, 60, 0.6);
+  border: 1.5px solid rgba(139, 92, 246, 0.25);
+  color: #e2e8f0;
+  transition: border-color 180ms ease,
+              box-shadow 180ms ease,
+              background 180ms ease,
+              transform 180ms ease;
+}
+
+.field input::placeholder { color: #64748b; }
+
+.field input:focus {
+  outline: none;
+  border-color: #8b5cf6;
+  background: rgba(40, 30, 80, 0.7);
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15),
+              0 0 25px rgba(139, 92, 246, 0.3),
+              0 0 40px rgba(6, 182, 212, 0.15);
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   02 TODO: button transition, hover lift, and active press.
+   ============================================================ */
+.primary {
+  transition: transform 180ms ease,
+              box-shadow 250ms ease,
+              filter 200ms ease,
+              background 300ms ease;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 40%, #06b6d4 100%);
+  background-size: 200% 200%;
+}
+
+/* 按钮光扫 */
+.primary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transition: left 0.5s ease;
+  pointer-events: none;
+}
+
+.primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px -4px rgba(139, 92, 246, 0.6),
+              0 0 30px rgba(139, 92, 246, 0.4),
+              0 0 50px rgba(6, 182, 212, 0.2);
+  filter: brightness(1.12);
+  background-position: 100% 50%;
+}
+
+.primary:hover:not(:disabled)::after {
+  left: 100%;
+}
+
+.primary:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 4px 14px -2px rgba(139, 92, 246, 0.5);
+}
+
+/* ============================================================
+   03 TODO: @keyframes shake and .is-error.
+   ============================================================ */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25%, 75% { transform: translateX(-6px); }
+  50% { transform: translateX(6px); }
+}
+
+.is-error {
+  animation: shake 380ms ease;
+}
+
+.is-error input[aria-invalid="true"] {
+  border-color: #ec4899;
+  box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.2),
+              0 0 18px rgba(236, 72, 153, 0.3);
+}
+
+/* ============================================================
+   04 TODO: @keyframes spin and .spinner.
+   ============================================================ */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spinner {
+  animation: spin 800ms linear infinite;
+  filter: drop-shadow(0 0 6px rgba(139, 92, 246, 0.8));
+}
+
+/* ============================================================
+   05 TODO: .panel-enter-active, .panel-leave-active,
+   .panel-enter-from, and .panel-leave-to.
+   ============================================================ */
+.panel-enter-active,
+.panel-leave-active {
+  transition: opacity 320ms ease,
+              transform 320ms ease;
+}
+
+.panel-enter-from {
+  opacity: 0;
+  transform: translateY(18px) scale(0.98) rotateX(4deg);
+}
+
+.panel-leave-to {
+  opacity: 0;
+  transform: translateY(-12px) scale(0.98) rotateX(-4deg);
+}
+
+/* ============================================================
+   欢迎页增强动画
+   ============================================================ */
+.welcome h2 {
+  animation: welcomeTitle 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.welcome .description {
+  animation: fadeUp 500ms ease 100ms both;
+}
+
+.welcome .profile-details {
+  animation: fadeUp 500ms ease 200ms both;
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+.welcome .profile-details dt { color: #a78bfa; }
+.welcome .profile-details dd { color: #e2e8f0; }
+.welcome .reload-hint { color: #94a3b8; animation: fadeUp 500ms ease 300ms both; }
+.welcome .primary { animation: fadeUp 500ms ease 400ms both; }
+
+@keyframes welcomeTitle {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 欢迎页霓虹脉冲 */
+.welcome.card {
+  animation: cardIn 650ms cubic-bezier(0.22, 1, 0.36, 1) both,
+             welcomePulse 2.5s ease-in-out 1s infinite;
+}
+
+@keyframes welcomePulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(139, 92, 246, 0),
+                0 0 20px rgba(139, 92, 246, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 40px 8px rgba(139, 92, 246, 0.25),
+                0 0 60px rgba(6, 182, 212, 0.15);
+  }
+}
+
+/* ============================================================
+   左侧 intro 面板装饰
+   ============================================================ */
+.intro { position: relative; overflow: hidden; }
+
+.intro h1 {
+  background: linear-gradient(135deg, #fff, #8b5cf6, #06b6d4, #ec4899);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: titleGradient 5s ease infinite;
+}
+
+.intro-copy > p:last-child { color: #94a3b8 !important; }
+.intro-footer { color: #64748b !important; }
+
+@keyframes titleGradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.brand {
+  position: relative;
+  display: inline-block;
+  color: #a78bfa;
+}
+
+.brand::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #8b5cf6, #06b6d4, #ec4899);
+  transition: width 400ms ease;
+}
+
+.brand:hover::after { width: 100%; }
+
+/* 切换按钮 */
+.text-button { color: #a78bfa; }
+.switch-copy { color: #94a3b8; }
+.demo-note { color: #64748b; }
+.notice { color: #fbbf24; }
+
+/* ============================================================
+   06 TODO: prefers-reduced-motion overrides.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  body::before,
+  body::after,
+  .shell::before,
+  .shell::after,
+  .intro::before,
+  .workspace::before,
+  .card::before {
+    animation: none !important;
+  }
+
+  .field input,
+  .primary,
+  .panel-enter-active,
+  .panel-leave-active,
+  .card-shell,
+  .welcome.card,
+  .welcome h2,
+  .welcome .description,
+  .welcome .profile-details,
+  .welcome .reload-hint,
+  .welcome .primary {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .is-error,
+  .spinner {
+    animation: none !important;
+  }
+
+  .primary:hover:not(:disabled),
+  .primary:active:not(:disabled),
+  .panel-enter-from,
+  .panel-leave-to {
+    transform: none !important;
+  }
+
+  .primary::after,
+  .brand::after {
+    display: none;
+  }
+}
